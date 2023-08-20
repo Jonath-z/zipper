@@ -4,6 +4,7 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"strings"
 )
 
 func FilePathMapping() []string {
@@ -13,8 +14,11 @@ func FilePathMapping() []string {
 		if err != nil {
 			log.Fatal(err)
 		}
-		jsFilesPath = append(jsFilesPath, path)
-		println(info)
+
+		if strings.HasSuffix(path, ".js") {
+			jsFilesPath = append(jsFilesPath, path)
+			println(path)
+		}
 		return nil
 	})
 

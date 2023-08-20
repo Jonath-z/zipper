@@ -1,3 +1,0 @@
-function params (){
-    return "params"
-}

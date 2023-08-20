@@ -1,8 +1,5 @@
-const person = {
-    firstName: "John",
-    lastName: "Doe",
-    age: 50,
-    eyeColor: "blue"
-};
+const  squareArea = require('./square.js');
+const circleArea = require('./circle.js');
 
-export default person
+console.log('Area of square: ', squareArea(5));
+console.log('Area of circle', circleArea(5));

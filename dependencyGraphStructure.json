@@ -1,0 +1,20 @@
+[
+  {
+    "path": "js/circle.js",
+    "content": "const PI = 3.141;\nfunction area(radius) {\n    return PI * radius * radius;\n}\n\nmodule.exports = area()",
+    "dependencies": null
+  },
+  {
+    "path": "js/index.js",
+    "content": "import squareArea from './square.js';\nimport circleArea from './circle.js'\n\nconsole.log('Area of square: ', squareArea(5));\nconsole.log('Area of circle', circleArea(5));",
+    "dependencies": [
+      { "line": 1, "dependencyPath": "'./square.js';" },
+      { "line": 2, "dependencyPath": "'./circle.js'" }
+    ]
+  },
+  {
+    "path": "js/square.js",
+    "content": "function area(side) {\n    return side * side;\n}\n\nmodule.exports = area()",
+    "dependencies": null
+  }
+]

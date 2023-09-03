@@ -1,6 +1,8 @@
 package src
 
 import (
+	"encoding/json"
+	"fmt"
 	"log"
 	"os"
 	"path/filepath"
@@ -28,5 +30,11 @@ func CreateDependencyGraph() []Node {
 		log.Fatal(e)
 	}
 
+	b, err := json.Marshal(&dependencyGraph)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	fmt.Println(string(b))
 	return dependencyGraph
 }

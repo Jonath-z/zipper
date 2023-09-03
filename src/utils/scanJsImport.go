@@ -3,10 +3,10 @@ package utils
 import "strings"
 
 func ScanJSImport(text string) string {
-	splitedString := strings.Split(text, " ")
+	splittedString := strings.Split(text, " ")
 
-	if splitedString[0] == "import" && splitedString[2] == "from" {
-		return splitedString[3]
+	if splittedString[0] == "import" && splittedString[2] == "from" {
+		return splittedString[3]
 	}
 
 	return ""

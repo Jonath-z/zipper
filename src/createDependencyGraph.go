@@ -7,8 +7,8 @@ import (
 	"strings"
 )
 
-func FilePathMapping() []string {
-	var jsFilesPath []string
+func CreateDependencyGraph() []Node {
+	var dependencyGraph []Node
 
 	e := filepath.Walk("js", func(path string, info os.FileInfo, err error) error {
 		if err != nil {
@@ -16,9 +16,11 @@ func FilePathMapping() []string {
 		}
 
 		if strings.HasSuffix(path, ".js") {
-			jsFilesPath = append(jsFilesPath, path)
-			println(path)
+			node := CreateNode(path)
+			dependencyGraph = append(dependencyGraph, *node)
+			//println(path)
 		}
+
 		return nil
 	})
 
@@ -26,5 +28,5 @@ func FilePathMapping() []string {
 		log.Fatal(e)
 	}
 
-	return jsFilesPath
+	return dependencyGraph
 }

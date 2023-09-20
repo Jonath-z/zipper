@@ -20,7 +20,6 @@ func CreateDependencyGraph() []Node {
 		if strings.HasSuffix(path, ".js") {
 			node := CreateNode(path)
 			dependencyGraph = append(dependencyGraph, *node)
-			//println(path)
 		}
 
 		return nil

@@ -8,10 +8,10 @@ import (
 )
 
 func Bundler() {
-	outputFile := "/src/js/dist/index.js"
+	outputFile := "js/dist/index.js"
 	fileMap := FileMapping()
 
-	//dependencyGraph := CreateDependencyGraph()
+	dependencyGraph := CreateDependencyGraph()
 
 	dir := filepath.Dir(outputFile)
 	if err := os.MkdirAll(dir, os.ModePerm); err != nil {
@@ -31,6 +31,11 @@ func Bundler() {
 	}(bundledFile)
 
 	for _, path := range fileMap {
-		fmt.Println(path)
+		fmt.Println("these are path", path)
+		for _, node := range dependencyGraph {
+			if node.Path == "js/index.js" {
+				//	write on the specified line the specified dependency graph
+			}
+		}
 	}
 }

@@ -1,6 +1,54 @@
 # zipper
 
-Zipper is a first level minimalistic and fast JavaScript bundler written in Go.
+Zipper is a minimalistic and fast JavaScript bundler written in Go.
+
+## Priciple
+
+To understand how JavaScript is bundled, I read [Build Your Own JS Code Bundler](https://blog.bitsrc.io/building-your-first-bundler-99e4fdf502b2?gi=50efca31fac7) article.
+
+In this bundler as in the mentioned article, here are main operations that are implemented to bundle the JavaScript code code:
+
+- Walk through all the files in `/js` directory
+- Read all the files with `.js` extension
+- Calculate the dependencies graph of the project
+- Build the depedency graph
+
+Note: This bundler does not bundle recursively, however any contribution is welcome
+
+## Dependency Graph structure
+
+```json
+[
+  {
+    path: "js/circle.js",
+    content:
+      "const PI = 3.141;function area(radius) {    return PI * radius * radius;}",
+    dependencies: null,
+  },
+  {
+    path: "js/index.js",
+    content:
+      "console.log('Area of square: ', squareArea(5));console.log('Area of circle', circleArea(5));",
+    dependencies: [
+      {
+        line: 1,
+        dependencyPath: "'./square.js';",
+        expression: "import squareArea from './square.js';",
+      },
+      {
+        line: 2,
+        dependencyPath: "'./circle.js';",
+        expression: "import circleArea from './circle.js';",
+      },
+    ],
+  },
+  {
+    path: "js/square.js",
+    content: "function area(side) {    return side * side;}",
+    dependencies: null,
+  },
+];
+```
 
 ## How to run locally
 

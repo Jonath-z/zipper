@@ -17,7 +17,7 @@ Note: This bundler does not bundle recursively, however any contribution is welc
 
 ## Dependency Graph structure
 
-```json
+```javascript
 [
   {
     path: "js/circle.js",

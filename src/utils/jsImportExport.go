@@ -11,3 +11,12 @@ func ScanJSImport(text string) string {
 
 	return ""
 }
+
+func ScanModuleImportExpression(text string) string {
+	splitString := strings.Split(text, " ")
+	if splitString[0] == "import" && splitString[2] == "from" {
+		return text
+	}
+
+	return ""
+}

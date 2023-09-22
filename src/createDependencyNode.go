@@ -1,16 +1,15 @@
 package src
 
 import (
-	"bufio"
 	"fmt"
 	"github.com/Jonath-z/zipper/src/utils"
-	"log"
-	"os"
+	"strings"
 )
 
 type NodeDependency struct {
 	Line           int64  `json:"line"`
 	DependencyPath string `json:"dependencyPath"`
+	Expression     string `json:"expression"`
 }
 type Node struct {
 	Path         string           `json:"path"`
@@ -18,22 +17,24 @@ type Node struct {
 	Dependencies []NodeDependency `json:"dependencies"`
 }
 
+func getContentWithoutImportAndExportExpression(path string) string {
+	var content string
+	scanner := utils.FileScanner(path)
+
+	for scanner.Scan() {
+		if strings.HasPrefix(scanner.Text(), "import") || strings.Contains(scanner.Text(), "module.exports") {
+			continue
+		}
+		content += scanner.Text()
+	}
+
+	return content
+}
+
 func mapNodeDependencies(path string) []NodeDependency {
 	var nodeDependency []NodeDependency
 
-	file, err := os.Open(path)
-	if err != nil {
-		fmt.Println(err)
-	}
-
-	defer func(file *os.File) {
-		err := file.Close()
-		if err != nil {
-			fmt.Printf("error while closing the file %v\n", err)
-		}
-	}(file)
-
-	scanner := bufio.NewScanner(file)
+	scanner := *utils.FileScanner(path)
 	var counter int64
 	for scanner.Scan() {
 		if utils.ScanJSImport(scanner.Text()) != "" {
@@ -41,30 +42,42 @@ func mapNodeDependencies(path string) []NodeDependency {
 			node := &NodeDependency{
 				DependencyPath: utils.ScanJSImport(scanner.Text()),
 				Line:           counter,
+				Expression:     utils.ScanModuleImportExpression(scanner.Text()),
 			}
-
 			nodeDependency = append(nodeDependency, *node)
 		}
 	}
 
 	if err := scanner.Err(); err != nil {
-		fmt.Println("error while scanning the file")
+		fmt.Println("error while scanning the file", err)
 	}
 
 	return nodeDependency
 }
 
-func CreateNode(path string) *Node {
-	fileContent, err := os.ReadFile(path)
-	if err != nil {
-		log.Fatalf("Can not read the file on %v", path)
-		return nil
+func removeModuleExportLinesFromFileContent(path string) string {
+	var content string
+	scanner := utils.FileScanner(path)
+	for scanner.Scan() {
+		if strings.Contains(scanner.Text(), "module.export") {
+			continue
+		} else {
+			content += scanner.Text()
+		}
 	}
 
+	println(content)
+	return content
+}
+
+func CreateNode(path string) *Node {
 	dependencies := mapNodeDependencies(path)
+	content := removeModuleExportLinesFromFileContent(path)
+	//fmt.Println("content without impExp:", getContentWithoutImportAndExportExpression(path))
+
 	node := &Node{
 		Path:         path,
-		Content:      string(fileContent),
+		Content:      content,
 		Dependencies: dependencies,
 	}
 

@@ -2,6 +2,7 @@ package src
 
 import (
 	"fmt"
+	"github.com/Jonath-z/zipper/src/utils"
 	"log"
 	"os"
 	"path/filepath"
@@ -9,7 +10,7 @@ import (
 
 func Bundler() {
 	outputFile := "js/dist/index.js"
-	fileMap := FileMapping()
+	//fileMap := FileMapping()
 
 	dependencyGraph := CreateDependencyGraph()
 
@@ -30,12 +31,22 @@ func Bundler() {
 		}
 	}(bundledFile)
 
-	for _, path := range fileMap {
-		fmt.Println("these are path", path)
-		for _, node := range dependencyGraph {
-			if node.Path == "js/index.js" {
-				//	write on the specified line the specified dependency graph
+	for _, node := range dependencyGraph {
+		if node.Path == "js/index.js" {
+			content := node.Content
+			if node.Dependencies != nil {
+				for _, dependency := range node.Dependencies {
+					if dependency.Expression != "" {
+						fmt.Println("content:", content, "expression:", dependency.Expression)
+						//replaced := strings.ReplaceAll(content, dependency.Expression, node.Content)
+						//content = replaced
+						//fmt.Println("replaced", replaced)
+					}
+				}
 			}
+			_, err := bundledFile.Write([]byte(node.Content))
+			utils.CheckError(err)
 		}
 	}
+
 }

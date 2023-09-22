@@ -6,19 +6,17 @@
   },
   {
     "path": "js/index.js",
-    "content": "import squareArea from './square.js';import circleArea from './circle.js';console.log('Area of square: ', squareArea(5));console.log('Area of circle', circleArea(5));",
+    "content": "console.log('Area of square: ', squareArea(5));console.log('Area of circle', circleArea(5));",
     "dependencies": [
       {
         "line": 1,
         "dependencyPath": "'./square.js';",
-        "expression": "import squareArea from './square.js';",
-        "dependencyContent": "console.log('Area of square: ', squareArea(5));console.log('Area of circle', circleArea(5));"
+        "expression": "import squareArea from './square.js';"
       },
       {
         "line": 2,
         "dependencyPath": "'./circle.js';",
-        "expression": "import circleArea from './circle.js';",
-        "dependencyContent": "console.log('Area of square: ', squareArea(5));console.log('Area of circle', circleArea(5));"
+        "expression": "import circleArea from './circle.js';"
       }
     ]
   },
@@ -28,4 +26,3 @@
     "dependencies": null
   }
 ]
-

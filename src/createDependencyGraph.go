@@ -1,6 +1,8 @@
 package src
 
 import (
+	"encoding/json"
+	"fmt"
 	"github.com/Jonath-z/zipper/src/utils"
 	"os"
 	"path/filepath"
@@ -20,8 +22,8 @@ func CreateDependencyGraph() []Node {
 	})
 	utils.CheckError(e)
 
-	//b, err := json.Marshal(&dependencyGraph)
-	//utils.CheckError(err)
-	//fmt.Println(string(b))
+	b, err := json.Marshal(&dependencyGraph)
+	utils.CheckError(err)
+	fmt.Println(string(b))
 	return dependencyGraph
 }

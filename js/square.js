@@ -1,5 +1,5 @@
-function area(side) {
+function circleArea(side) {
     return side * side;
 }
 
-module.exports = area()
+module.exports = circleArea()

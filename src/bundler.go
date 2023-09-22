@@ -6,11 +6,28 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"strings"
 )
+
+func findDependencyContent(dependencyPath string, dependencyGraph []Node) string {
+	var dependencyContent string
+	cleanedPath := strings.Split(dependencyPath, "'")[1]
+	cleanedPathWithFileNameOnly := strings.Split(cleanedPath, "/")[1]
+	cleanedPathWithPrefix := "js/" + cleanedPathWithFileNameOnly
+	fmt.Println("cleanedPath:", cleanedPathWithPrefix)
+
+	for _, node := range dependencyGraph {
+		if cleanedPathWithPrefix == node.Path {
+			dependencyContent = node.Content
+			break
+		}
+	}
+
+	return dependencyContent
+}
 
 func Bundler() {
 	outputFile := "js/dist/index.js"
-	//fileMap := FileMapping()
 
 	dependencyGraph := CreateDependencyGraph()
 
@@ -37,14 +54,12 @@ func Bundler() {
 			if node.Dependencies != nil {
 				for _, dependency := range node.Dependencies {
 					if dependency.Expression != "" {
-						fmt.Println("content:", content, "expression:", dependency.Expression)
-						//replaced := strings.ReplaceAll(content, dependency.Expression, node.Content)
-						//content = replaced
-						//fmt.Println("replaced", replaced)
+						dependencyContent := findDependencyContent(dependency.DependencyPath, dependencyGraph)
+						content = dependencyContent + ";" + content
 					}
 				}
 			}
-			_, err := bundledFile.Write([]byte(node.Content))
+			_, err := bundledFile.Write([]byte(content))
 			utils.CheckError(err)
 		}
 	}

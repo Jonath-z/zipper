@@ -1,1 +1,1 @@
-import squareArea from './square.js';import circleArea from './circle.js';console.log('Area of square: ', squareArea(5));console.log('Area of circle', circleArea(5));
+const PI = 3.141;function squareArea(radius) {    return PI * radius * radius;};function circleArea(side) {    return side * side;};console.log('Area of square: ', squareArea(5));console.log('Area of circle', circleArea(5));

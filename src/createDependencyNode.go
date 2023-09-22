@@ -17,20 +17,6 @@ type Node struct {
 	Dependencies []NodeDependency `json:"dependencies"`
 }
 
-func getContentWithoutImportAndExportExpression(path string) string {
-	var content string
-	scanner := utils.FileScanner(path)
-
-	for scanner.Scan() {
-		if strings.HasPrefix(scanner.Text(), "import") || strings.Contains(scanner.Text(), "module.exports") {
-			continue
-		}
-		content += scanner.Text()
-	}
-
-	return content
-}
-
 func mapNodeDependencies(path string) []NodeDependency {
 	var nodeDependency []NodeDependency
 
@@ -55,25 +41,22 @@ func mapNodeDependencies(path string) []NodeDependency {
 	return nodeDependency
 }
 
-func removeModuleExportLinesFromFileContent(path string) string {
+func getContentWithoutImportAndExportExpression(path string) string {
 	var content string
 	scanner := utils.FileScanner(path)
+
 	for scanner.Scan() {
-		if strings.Contains(scanner.Text(), "module.export") {
+		if strings.HasPrefix(scanner.Text(), "import") || strings.Contains(scanner.Text(), "module.exports") {
 			continue
-		} else {
-			content += scanner.Text()
 		}
+		content += scanner.Text()
 	}
 
-	println(content)
 	return content
 }
-
 func CreateNode(path string) *Node {
 	dependencies := mapNodeDependencies(path)
-	content := removeModuleExportLinesFromFileContent(path)
-	//fmt.Println("content without impExp:", getContentWithoutImportAndExportExpression(path))
+	content := getContentWithoutImportAndExportExpression(path)
 
 	node := &Node{
 		Path:         path,

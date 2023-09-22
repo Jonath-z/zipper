@@ -1,6 +1,6 @@
 const PI = 3.141;
-function area(radius) {
+function squareArea(radius) {
     return PI * radius * radius;
 }
 
-module.exports = area()
+module.exports = squareArea()
